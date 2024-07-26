@@ -19,7 +19,8 @@
         "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^9.5",
         "rregeer/phpunit-coverage-check": "^0.3.1",
-        "squizlabs/php_codesniffer": "^3.8"
+        "squizlabs/php_codesniffer": "^3.8",
+        "open-smf/connection-pool": "^1.0"
 	},
 	"scripts": {
         "test": "phpunit",
