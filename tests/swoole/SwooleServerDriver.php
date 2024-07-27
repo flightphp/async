@@ -59,7 +59,7 @@ class SwooleServerDriver {
 		});
 
         $this->Swoole->on('Request', function (SwooleRequest $request, SwooleResponse $response) use ($AsyncBridge) {
-
+			echo memory_get_peak_usage() . PHP_EOL;
 			// $pool1 = $this->getConnectionPool('mysql');
             // // /**@var MySQL $mysql */
             // $pdo = $pool1->borrow();
@@ -88,7 +88,6 @@ class SwooleServerDriver {
 			// $Engine->unregister('request');
 			// $Engine->register('response', 'flight\net\Response');
 			// $Engine->register('request', 'flight\net\Request');
-
 
 			$SwooleAsyncRequest = new SwooleAsyncRequest($request);
 			$SwooleAsyncResponse = new SwooleAsyncResponse($response);

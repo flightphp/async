@@ -31,13 +31,6 @@ class AsyncBridge
      */
     public function __construct(Engine $app)
     {
-
-        // Makes it so the app doesn't stop when it runs.
-        $app->map('stop', function (?int $code = null) use ($app) {
-            if ($code !== null) {
-                $app->response()->status($code);
-            }
-        });
         $this->app = $app;
     }
 

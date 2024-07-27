@@ -29,6 +29,13 @@ $app->route('/t', function() use ($app) {
 	echo '<h1>Test</h1>';
 });
 
+// Makes it so the app doesn't stop when it runs.
+$app->map('stop', function (?int $code = null) use ($app) {
+	if ($code !== null) {
+		$app->response()->status($code);
+	}
+});
+
 if(!defined("NOT_SWOOLE")) {
 	// $app->map('stop', function() use ($app) {
 	// 	$response = $app->response();
