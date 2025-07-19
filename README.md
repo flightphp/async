@@ -52,27 +52,27 @@ require_once(__DIR__.'/vendor/autoload.php');
 $app = Flight::app();
 
 $app->route('/', function() use ($app) {
-	$app->json([
-		'hello' => 'world'
-	]);
+    $app->json([
+        'hello' => 'world'
+    ]);
 });
 
 if(!defined("NOT_SWOOLE")) {
-	// Require the SwooleServerDriver class since we're running in Swoole mode.
-	require_once(__DIR__.'/SwooleServerDriver.php');
+    // Require the SwooleServerDriver class since we're running in Swoole mode.
+    require_once(__DIR__.'/SwooleServerDriver.php');
 
-	// Custom little hack
-	// Makes it so the app doesn't stop when it runs.
-	$app->map('stop', function (?int $code = null) use ($app) {
-		if ($code !== null) {
-			$app->response()->status($code);
-		}
-	});
-	Swoole\Runtime::enableCoroutine();
-	$Swoole_Server = new SwooleServerDriver('127.0.0.1', 9501, $app);
-	$Swoole_Server->start();
+    // Custom little hack
+    // Makes it so the app doesn't stop when it runs.
+    $app->map('stop', function (?int $code = null) use ($app) {
+        if ($code !== null) {
+            $app->response()->status($code);
+        }
+    });
+    Swoole\Runtime::enableCoroutine();
+    $Swoole_Server = new SwooleServerDriver('127.0.0.1', 9501, $app);
+    $Swoole_Server->start();
 } else {
-	$app->start();
+    $app->start();
 }
 ```
 
@@ -90,26 +90,26 @@ use Swoole\HTTP\Response as SwooleResponse;
 
 class SwooleServerDriver {
 
-	//use ConnectionPoolTrait;
+    //use ConnectionPoolTrait;
 
-	/** @var SwooleServer */
+    /** @var SwooleServer */
     protected $Swoole;
 
-	/** @var Engine */
-	protected $app;
+    /** @var Engine */
+    protected $app;
 
     public function __construct(string $host, int $port, Engine $app) {
         $this->Swoole = new SwooleServer($host, $port);
-		$this->app = $app;
+        $this->app = $app;
 
         $this->setDefault();
         $this->bindWorkerEvents();
         $this->bindHttpEvent();
     }
 
-	protected function setDefault() {
-		// A bunch of default settings for the Swoole server.
-		// You can customize these settings based on your needs.
+    protected function setDefault() {
+        // A bunch of default settings for the Swoole server.
+        // You can customize these settings based on your needs.
         $this->Swoole->set([
             'daemonize'             => false,
             'dispatch_mode'         => 1,
@@ -126,34 +126,34 @@ class SwooleServerDriver {
         ]);
     }
 
-	protected function bindHttpEvent() {
-		$app = $this->app;
-		$AsyncBridge = new AsyncBridge($app);
-		$this->Swoole->on("Start", function(SwooleServer $server) {
-			echo "Swoole http server is started at http://127.0.0.1:9501\n";
-		});
+    protected function bindHttpEvent() {
+        $app = $this->app;
+        $AsyncBridge = new AsyncBridge($app);
+        $this->Swoole->on("Start", function(SwooleServer $server) {
+            echo "Swoole http server is started at http://127.0.0.1:9501\n";
+        });
 
-		// This is where the magic happens, the request is processed by the AsyncBridge
+        // This is where the magic happens, the request is processed by the AsyncBridge
         $this->Swoole->on('Request', function (SwooleRequest $request, SwooleResponse $response) use ($AsyncBridge) {
-			$SwooleAsyncRequest = new SwooleAsyncRequest($request);
-			$SwooleAsyncResponse = new SwooleAsyncResponse($response);
-			$AsyncBridge->processRequest($SwooleAsyncRequest, $SwooleAsyncResponse);
-			$response->end();
+            $SwooleAsyncRequest = new SwooleAsyncRequest($request);
+            $SwooleAsyncResponse = new SwooleAsyncResponse($response);
+            $AsyncBridge->processRequest($SwooleAsyncRequest, $SwooleAsyncResponse);
+            $response->end();
 
-			gc_collect_cycles(); // Collect garbage to free memory (optional)
+            gc_collect_cycles(); // Collect garbage to free memory (optional)
         });
     }
 
     protected function bindWorkerEvents() {
-		// You can use this to set custom events for the workers, such as creating connection pools.
-		$createPools = function() {
-			// Create connection pools for each worker
-			// This is useful for managing database connections or other resources that need to be shared across requests.
-		};
-		$closePools = function() {
-			// Close connection pools for each worker
-			// This is useful for cleaning up resources when the worker stops or encounters an error.
-		};
+        // You can use this to set custom events for the workers, such as creating connection pools.
+        $createPools = function() {
+            // Create connection pools for each worker
+            // This is useful for managing database connections or other resources that need to be shared across requests.
+        };
+        $closePools = function() {
+            // Close connection pools for each worker
+            // This is useful for cleaning up resources when the worker stops or encounters an error.
+        };
         $this->Swoole->on('WorkerStart', $createPools);
         $this->Swoole->on('WorkerStop', $closePools);
         $this->Swoole->on('WorkerError', $closePools);

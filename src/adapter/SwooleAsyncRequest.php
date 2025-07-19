@@ -10,7 +10,7 @@ use Swoole\Http\Request as Swoole_Request;
 class SwooleAsyncRequest implements AsyncRequestInterface
 {
     /**
-     * swoole request
+     * Swoole request
      *
      * @var Swoole_Request
      */

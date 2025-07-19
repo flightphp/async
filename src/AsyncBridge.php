@@ -65,7 +65,8 @@ class AsyncBridge
         //$Request = $this->copyHeaders($AsyncRequest, $Request);
 
         $this->app->unregister('request');
-        $this->app->register('request', Request::class, [], function () use (&$Request, $AsyncRequest) { // @phpstan-ignore-line
+        $this->app->register('request', Request::class, [], function () use (&$Request, $AsyncRequest) {
+ // @phpstan-ignore-line
             if ($this->isMultiPartFormData($Request) || $this->isXWwwFormUrlEncoded($Request)) {
                 $Request = $this->handlePostData($AsyncRequest, $Request);
             }
