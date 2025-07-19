@@ -36,6 +36,6 @@
     },
     "require": {
 		"php": "^7.4",
-        "flightphp/core": "^3.11"
+        "flightphp/core": "^3.16"
     }
 }
