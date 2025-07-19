@@ -159,8 +159,7 @@ class SwooleServerDriver {
         $this->Swoole->on('WorkerError', $closePools);
     }
 
-    public function start()
-    {
+    public function start() {
         $this->Swoole->start();
     }
 }
