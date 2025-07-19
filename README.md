@@ -1,6 +1,6 @@
 # What is Async?
 
-Async is a package for the Flight framework that allows you to run your Flight apps in asynchronous frameworks like ReactPHP, Swoole, Amp, RoadRunner, Workerman, Adapterman, etc.
+Async is a package for the Flight framework that allows you to run your Flight apps in asynchronous frameworks like ReactPHP, Swoole, Amp, RoadRunner, Workerman, Adapterman, etc. Currently only configured for [Swoole](https://www.swoole.co.uk/) and [AdapterMan](https://github.com/joanhey/AdapterMan)
 
 # Requirements
 
