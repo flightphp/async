@@ -94,6 +94,8 @@ class SwooleServerDriver {
 			$AsyncBridge->processRequest($SwooleAsyncRequest, $SwooleAsyncResponse);
 			// $pool1->return($pdo);
 			$response->end();
+
+			gc_collect_cycles(); // Collect garbage to free memory
         });
     }
 
