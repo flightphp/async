@@ -47,6 +47,15 @@ class SwooleServerDriver
             'buffer_output_size'    => 4 * 1024 * 1024,
             'worker_num'            => 4, // Each worker holds a connection pool
         ]);
+
+        // Custom little hack
+        // Makes it so the app doesn't stop when it runs.
+        $app = $this->app;
+        $app->map('stop', function (?int $code = null) use ($app) {
+            if ($code !== null) {
+                $app->response()->status($code);
+            }
+        });    
     }
 
     protected function bindHttpEvent()
