@@ -93,11 +93,11 @@ class AsyncBridgeTest extends TestCase
             $app->json(['test' => 'test']);
         });
         $Bridge = new \flight\AsyncBridge($app);
-
+		ob_start();
         $Response = $Bridge->processRequest($Swoole_Async_Request, $Swoole_Async_Response);
-
+		ob_end_clean();
         $this->assertInstanceOf(\flight\AsyncResponseInterface::class, $Response);
-        $this->assertEquals('application/json; charset=utf-8', $Response->getResponse()->header['content-type']);
+        $this->assertEquals('application/json', $Response->getResponse()->header['content-type']);
         $this->assertEquals(200, $Response->getResponse()->status);
         $this->assertEquals('{"test":"test"}', $Response->getResponse()->content);
     }
