@@ -113,7 +113,11 @@ class SwooleServerDriver {
             'enable_reuse_port'     => true,
             'enable_coroutine'      => true,
             'http_compression'      => false,
-            'enable_static_handler' => false,
+            'enable_static_handler' => true,
+            // Set the document root to the current directory or wherever your public/ directory is located
+            'document_root'         => __DIR__,
+            // Customize static handler locations
+            'static_handler_locations' => ['/css', '/js', '/images', '/.well-known'],
             'buffer_output_size'    => 4 * 1024 * 1024,
             'worker_num'            => 4, // Each worker holds a connection pool
         ]);
